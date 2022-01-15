@@ -14,8 +14,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="FPSTemplate"
-config/description="A basic FPS Template with Auto Publish to itch using Github Actions"
+config/name="DiverDash"
+config/description="A multiplayer parkour course"
 run/main_scene="res://scenes/main_menu.tscn"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"
@@ -24,6 +24,7 @@ config/icon="res://icon.png"
 
 fader="*res://nodes/fader.tscn"
 fullscreen="*res://nodes/fullscreen.tscn"
+PiperSocket="*res://scripts/piperSocket.gd"
 
 [display]
 

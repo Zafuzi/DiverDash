@@ -15,10 +15,21 @@ var playable = true
 var dir = Vector3.ZERO
 var velocity = Vector3.ZERO
 
+var player_id = rand_seed(get_instance_id() + rand_range(0, 100000))
+
 func _ready():
 	pivot = $pivot
+	
+func _input(event):
+	var message: Dictionary = {
+		id = player_id,
+		text = "player_pos",
+		pos = self.global_transform.origin
+	}
+	PiperSocket._send(message)
 
 func _physics_process(delta):
+	
 	dir = Vector3.ZERO
 	var basis = global_transform.basis
 	if Input.is_action_pressed("move_forward"):
@@ -61,6 +72,8 @@ func _physics_process(delta):
 	if translation.y < fall_limit and playable:
 		playable = false
 		fader._reload_scene()
+		
+
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and playable:
