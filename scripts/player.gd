@@ -21,10 +21,14 @@ func _ready():
 	pivot = $pivot
 	
 func _input(event):
+	if event.is_action_pressed("capture_mouse"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
 	var message: Dictionary = {
 		id = player_id,
 		text = "player_pos",
-		pos = self.global_transform.origin
+		pos = self.global_transform.origin,
+		rot = self.rotation
 	}
 	PiperSocket._send(message)
 
@@ -72,8 +76,6 @@ func _physics_process(delta):
 	if translation.y < fall_limit and playable:
 		playable = false
 		fader._reload_scene()
-		
-
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and playable:

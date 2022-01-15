@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://nodes/Dummy.gd" type="Script" id=1]
 
@@ -7,6 +7,15 @@ radius = 0.5
 
 [sub_resource type="CapsuleMesh" id=2]
 radius = 0.5
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 1, 0.2, 1 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.5, 0.5, 0.5 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 0.5, 0.1, 0.5 )
 
 [node name="Dummy" type="Spatial" groups=["dummy"]]
 script = ExtResource( 1 )
@@ -21,3 +30,24 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.836994, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance3" type="MeshInstance" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10724, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="MeshInstance4" type="MeshInstance" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.509329, 0.85933, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

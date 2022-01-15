@@ -85,17 +85,22 @@ func _on_data():
 		
 		var dummy_found = false
 		var dummy_pos : Vector3 = str2var("Vector3" + data.msg.pos)
+		var dummy_rot : Vector3 = str2var("Vector3" + data.msg.rot)
+		print(dummy_rot)
 		for dummy in dummies:
 			if dummy.dummy_id and dummy.dummy_id == data.sender_key:
+				dummy.rotation = dummy_rot
 				print(dummy.dummy_id)
 				dummy_found = true
 				if dummy.current_pos != dummy_pos:
 					dummy.current_pos = dummy_pos
 				
 		if not dummy_found:
+			# next update send my color with pos and rotation
 			var d = Dummy.instance()
 			d.dummy_id = data.sender_key
 			d.current_pos = dummy_pos
+			d.rotation = dummy_rot
 			get_tree().get_current_scene().add_child(d)
 
 func _process(delta):
