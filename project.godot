@@ -22,9 +22,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-fader="*res://nodes/fader.tscn"
+loader="*res://nodes/loader.tscn"
 fullscreen="*res://nodes/fullscreen.tscn"
-PiperSocket="*res://scripts/piperSocket.gd"
+piper="*res://scripts/piperSocket.gd"
 
 [display]
 
@@ -86,4 +86,5 @@ capture_mouse={
 
 [rendering]
 
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

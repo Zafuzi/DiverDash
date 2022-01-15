@@ -30,7 +30,7 @@ func _input(event):
 		pos = self.global_transform.origin,
 		rot = self.rotation
 	}
-	PiperSocket._send(message)
+	piper._send(message)
 
 func _physics_process(delta):
 	
@@ -75,7 +75,7 @@ func _physics_process(delta):
 	#prevents infinite falling
 	if translation.y < fall_limit and playable:
 		playable = false
-		fader._reload_scene()
+		loader.reload_scene()
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and playable:
