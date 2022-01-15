@@ -2,9 +2,12 @@
 
 [ext_resource path="res://scripts/pause_menu.gd" type="Script" id=1]
 [ext_resource path="res://nodes/button.tscn" type="PackedScene" id=2]
-[ext_resource path="res://fonts/cutive_mono_72.tres" type="DynamicFont" id=3]
-[ext_resource path="res://nodes/label.tscn" type="PackedScene" id=4]
+[ext_resource path="res://fonts/CutiveMono_Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://main_theme.tres" type="Theme" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 3 )
 
 [node name="pause_menu" type="CanvasLayer"]
 pause_mode = 2
@@ -26,6 +29,26 @@ color = Color( 0.0313726, 0.0352941, 0.0470588, 0.960784 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MarginContainer" type="MarginContainer" parent="menu"]
+anchor_right = 1.0
+margin_left = 24.0
+margin_top = 24.0
+margin_right = -24.0
+rect_min_size = Vector2( 0, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="menu/MarginContainer"]
+margin_right = 1872.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "Paused"
+align = 1
+valign = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="menu"]
 anchor_left = 0.5
@@ -62,16 +85,6 @@ margin_top = 137.0
 margin_right = 588.0
 margin_bottom = 191.0
 text = "main menu"
-
-[node name="label" parent="menu" instance=ExtResource( 4 )]
-anchor_right = 1.0
-margin_left = 0.0
-margin_top = 0.0
-margin_right = 0.0
-margin_bottom = 150.0
-custom_fonts/font = ExtResource( 3 )
-text = "paused"
-valign = 1
 
 [connection signal="pressed" from="menu/VBoxContainer/button_resume" to="." method="_unpause_game"]
 [connection signal="pressed" from="menu/VBoxContainer/button_reload" to="." method="_reload"]

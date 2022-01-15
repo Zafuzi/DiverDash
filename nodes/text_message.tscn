@@ -1,12 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/text_message.gd" type="Script" id=1]
-[ext_resource path="res://nodes/label.tscn" type="PackedScene" id=2]
+[ext_resource path="res://main_theme.tres" type="Theme" id=3]
 
 [node name="text_message" type="Control"]
 margin_right = 1920.0
 margin_bottom = 1080.0
 mouse_filter = 2
+theme = ExtResource( 3 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -14,13 +15,18 @@ __meta__ = {
 
 [node name="tween" type="Tween" parent="."]
 
-[node name="label" parent="." instance=ExtResource( 2 )]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 margin_left = 24.0
 margin_top = 24.0
-margin_right = 600.0
-margin_bottom = 54.0
+margin_bottom = 76.0
 rect_min_size = Vector2( 300, 100 )
-mouse_filter = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="MarginContainer"]
+margin_right = 300.0
+margin_bottom = 100.0
 size_flags_vertical = 1
-align = 0
+text = "sample text"
 autowrap = true

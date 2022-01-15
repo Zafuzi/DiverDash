@@ -9,7 +9,7 @@ var label
 
 func _ready():
 	tween = $tween
-	label = $label
+	label = $MarginContainer/label
 	label.text = message
 	label.modulate = Color(0.0, 0.0, 0.0, 0.0)
 

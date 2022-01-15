@@ -45,7 +45,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_right"):
 		dir += basis.x
 	dir = dir.normalized()
-
+	
 	var speed = walk_speed
 	if is_on_floor():
 		#this prevents you from sliding without messing up the is_on_ground() check
