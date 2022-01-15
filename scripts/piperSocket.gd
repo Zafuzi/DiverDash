@@ -101,7 +101,7 @@ func _on_data():
 			d.dummy_id = data.sender_key
 			d.current_pos = dummy_pos
 			d.rotation = dummy_rot
-			get_tree().get_current_scene().add_child(d)
+			get_node("/root").add_child(d)
 
 func _process(delta):
 	if ws:

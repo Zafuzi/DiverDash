@@ -73,7 +73,6 @@ margin_right = 381.0
 margin_bottom = 54.0
 text = "play"
 script = ExtResource( 5 )
-start_scene = "level_001"
 
 [node name="quit_button" parent="Control/VBoxContainer" instance=ExtResource( 3 )]
 margin_left = 0.0
