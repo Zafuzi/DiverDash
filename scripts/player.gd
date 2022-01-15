@@ -1,13 +1,13 @@
 extends KinematicBody
 
-export var gravity = -10.0
+export var gravity = -8.0
 export var walk_speed = 4.0
-export var run_speed = 8.0
-export var jump_speed = 8.0
+export var run_speed = 7.0
+export var jump_speed = 7.0
 export var mouse_sensitivity = 0.002
-export var acceleration = 2.0
-export var friction = 10.0
-export var fall_limit = -100.0
+export var acceleration = 4.0
+export var friction = 4.0
+export var fall_limit = -10.0
 
 var pivot
 
