@@ -63,6 +63,6 @@ func set_new_scene(scene_resource):
 	fade_out()
 	
 func reload_scene():
-	var current_scene = get_tree().get_current_scene().get_name()
-	var path = "res://scenes/" + current_scene + ".tscn"
-	get_tree().reload_current_scene()
+	var root = get_tree().get_root()
+	current_scene = root.get_child(root.get_child_count() -1)
+	goto_scene(current_scene.get_name())
