@@ -3,12 +3,10 @@ extends Spatial
 var current_pos = Vector3(0, 0, 0)
 var dummy_id = 0
 
-var dead = true
+var dead = false
 	
 func _physics_process(delta):
-	dead = false
-	$Timer.start()
-	if global_transform.origin != current_pos:
+	if global_transform.origin - current_pos > Vector3(1, 1, 1):
 		_move_to(current_pos)
 		
 	if dead:

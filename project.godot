@@ -31,6 +31,10 @@ PiperSocket="*res://scripts/piperSocket.gd"
 window/size/width=1920
 window/size/height=1080
 
+[global]
+
+parallel=true
+
 [input]
 
 move_left={
