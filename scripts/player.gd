@@ -21,8 +21,6 @@ func _ready():
 	pivot = $pivot
 	
 func _input(event):
-	if event.is_action_pressed("capture_mouse"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		
 	var message: Dictionary = {
 		id = player_id,

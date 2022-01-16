@@ -16,12 +16,10 @@ func _input(event):
 			
 func _pause_game():
 	get_tree().paused = true
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	menu.show()
 
 func _unpause_game():
 	get_tree().paused = false
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	menu.hide()
 
 func _reload():
