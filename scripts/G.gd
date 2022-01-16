@@ -20,6 +20,9 @@ enum {
 	IDLE
 	MOVING_RIGHT
 	MOVING_LEFT
+	
+	USING_JOY
+	USING_MOUSEKB
 }
 
 export (int) var SW = 0
@@ -31,6 +34,21 @@ export (Vector2) var mouse_pos = Vector2(0, 0)
 
 export (int) var MonsterParts = 0
 const MAX_MONSTERS = 10
+
+var inputMethod = USING_MOUSEKB
+
+func _input(event):
+	if event is InputEventMouse:
+		inputMethod = USING_MOUSEKB
+	
+	if event is InputEventJoypadMotion:
+		inputMethod = USING_JOY
+		
+	if event is InputEventJoypadButton:
+		inputMethod = USING_JOY
+	
+	if event is InputEventKey:
+		inputMethod = USING_MOUSEKB
 
 func _process(delta):
 	screen_size = get_viewport().get_visible_rect().size

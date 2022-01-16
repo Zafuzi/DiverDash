@@ -65,10 +65,10 @@ func _process(delta):
 		
 	match facing:
 		G.TURNING_LEFT:
-			scale.x = -1
+			#scale.x = -1
 			facing = G.FACING_LEFT
 		G.TURNING_RIGHT:
-			scale.x = -1
+			#scale.x = -1
 			facing = G.FACING_RIGHT
 								
 	if Input.is_action_pressed("shoot"):
@@ -100,6 +100,7 @@ func _process(delta):
 	last_pos = global_position
 		
 func _physics_process(delta):
+	
 	if Input.is_action_pressed("ui_right"):
 		state = G.MOVING_RIGHT
 		velocity.x += 1
@@ -108,6 +109,11 @@ func _physics_process(delta):
 		velocity.x -= 1
 	else:
 		state = G.IDLE
+		
+	var dirLeft = Input.get_action_strength("joy_horizontal_left")
+	var dirRight = Input.get_action_strength("joy_horizontal_right")
+	
+	velocity.x += dirRight - dirLeft
 		
 	var direction = velocity.x > 0
 	if direction:
@@ -126,10 +132,32 @@ func _physics_process(delta):
 		velocity.y = JUMP_SPEED
 		
 	move_and_slide(velocity * SPEED)
+
+	var slide_count = get_slide_count()
+	if slide_count:
+		var collision = get_slide_collision(slide_count - 1)
+		var collider = collision.collider
+		if collider:
+			if collider is TileMap:
+				match_tile(collider, collision)
 	
-	if position.y > 2000:
+	if position.y > 2000 or position.y < -10000 or position.x > 4000 or position.x < -4000:
 		loader.reload_scene()
 
 func _on_hopsTimer_timeout():
 	if hopsLeft < 3:
 		hopsLeft += 1
+
+
+func match_tile(collider, collision):
+	# Find the character's position in tile coordinates
+	var tile_pos = collider.world_to_map(position)
+	# Find the colliding tile position
+	tile_pos -= collision.normal
+	# Get the tile id
+	var tile_id = collider.get_cellv(tile_pos)
+	if tile_id != -1:
+		var tile_name = collision.collider.tile_set.tile_get_name(tile_id)
+		match tile_name:
+			"spikes":
+				loader.reload_scene()

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://sprites/tiles/basic.png" type="Texture" id=1]
+
+[node name="spikes" type="Area2D"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -16, 16, -10, 0, 0, 15, 7, 1, 16, 16 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 256, 0, 32, 32 )

@@ -17,6 +17,7 @@ func _input(event):
 func _pause_game():
 	get_tree().paused = true
 	menu.show()
+	$menu/VBoxContainer/button_resume.grab_focus()
 
 func _unpause_game():
 	get_tree().paused = false

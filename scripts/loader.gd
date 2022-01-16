@@ -16,16 +16,17 @@ func goto_scene(path): # Game requests to switch to this scene.
 		push_error("failed to load path: " + path)
 		return
 	set_process(true)
+	G.current_level = path
 	current_scene.queue_free() # Get rid of the old scene.
 	
 func fade_in():
 	$animation.play("fade_in")
-	wait_frames = 100
+	wait_frames = 1
 	
 	
 func fade_out():
 	$animation.play("fade_out")
-	wait_frames = 100
+	wait_frames = 1
 	
 func _process(time):
 	if loader == null:

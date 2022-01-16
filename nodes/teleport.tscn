@@ -1,0 +1,35 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://sprites/portal/teleport2.png" type="Texture" id=1]
+[ext_resource path="res://sprites/portal/teleport4.png" type="Texture" id=2]
+[ext_resource path="res://sprites/portal/teleport1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/portal/teleport3.png" type="Texture" id=4]
+[ext_resource path="res://nodes/teleport.gd" type="Script" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 1 ), ExtResource( 4 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[node name="teleport" type="Area2D"]
+script = ExtResource( 5 )
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="sprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+frame = 3
+playing = true
+
+[node name="teleport_timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="teleport_timer" to="." method="_on_teleport_timer_timeout"]
