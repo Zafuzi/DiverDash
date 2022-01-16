@@ -1,9 +1,10 @@
 extends Node
 
 # The URL we will connect to
-export var token 			: String = "diverDash_test"
-export var websocket_url 	: String = "wss://piper.sleepless.com/" + token
-export var authorize_url	: String = "https://piper.sleepless.com/authorize_token:" + token
+export var level	: String = "test"
+var token 			: String = "diverDash_" + level
+var websocket_url 	: String = "wss://piper.sleepless.com/" + token
+var authorize_url	: String = "https://piper.sleepless.com/authorize_token:" + token
 
 # Our WebSocketClient instance
 var ws = WebSocketClient.new()
@@ -15,7 +16,7 @@ var peer : WebSocketPeer
 onready var globalSendTimer = Timer.new()
 var canSend = false
 
-var Dummy = preload("res://nodes/Dummy.tscn")
+onready var dummySpawner = $dummySpawner
 
 func _globalSendTimer_timeout():
 	canSend = true
@@ -84,24 +85,19 @@ func _on_data():
 		var dummies = get_tree().get_nodes_in_group("dummy")
 		
 		var dummy_found = false
-		var dummy_pos : Vector3 = str2var("Vector3" + data.msg.pos)
-		var dummy_rot : Vector3 = str2var("Vector3" + data.msg.rot)
-		print(dummy_rot)
+		var dummy_pos : Vector2 = str2var("Vector2" + data.msg.pos)
+		var dummy_rot : float = data.msg.rot
+		
 		for dummy in dummies:
 			if dummy.dummy_id and dummy.dummy_id == data.sender_key:
-				dummy.rotation = dummy_rot
-				print(dummy.dummy_id)
 				dummy_found = true
-				if dummy.current_pos != dummy_pos:
-					dummy.current_pos = dummy_pos
+				dummy.current_rot = dummy_rot
+				dummy.current_pos = dummy_pos
 				
 		if not dummy_found:
-			# next update send my color with pos and rotation
-			var d = Dummy.instance()
-			d.dummy_id = data.sender_key
-			d.current_pos = dummy_pos
-			d.rotation = dummy_rot
-			get_node("/root").add_child(d)
+			if data.msg.level == G.current_level:
+				# next update send my color with pos and rotation
+				dummySpawner.emit_signal("spawnDummy", data)
 
 func _process(delta):
 	if ws:

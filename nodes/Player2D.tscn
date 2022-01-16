@@ -1,0 +1,161 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://sprites/player/player001.png" type="Texture" id=2]
+[ext_resource path="res://nodes/Player2D.gd" type="Script" id=3]
+[ext_resource path="res://nodes/pause_menu.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform float value: hint_range(0, 100); // %
+uniform float thickness: hint_range(0, 100) = 30.; // % thickness
+uniform sampler2D fg: hint_albedo;
+uniform sampler2D bg: hint_black_albedo;
+uniform float offset: hint_range(0, 100); // %
+uniform float smoothing: hint_range(0, 100) = 5.;
+
+void fragment() {
+	vec2 point = UV - vec2(0.5);
+	float PI = 3.14159265358979323846;
+	float ang = (1. - atan(point.x, point.y) / PI) * 50. - offset;
+	if (ang < 0.)
+		ang += 100.;
+	float s = smoothing / 1000.;
+	float k = PI / 2. / s;
+	float r1 = .5 - thickness / 200.;
+	float r2 = .5;
+	float r = length(point);
+	float uy = (r2 - r) / (r2 - r1);
+	if (r > r2 || r < r1)
+		COLOR.a = 0.;
+	else {
+		if (ang <= value) 
+			COLOR = texture(fg, vec2(ang / 100., uy));
+		else
+			COLOR = texture(bg, vec2(ang / 100., uy));
+		if ((r2 - r) < s)
+			COLOR.a = sin((r2 - r) * k);
+		if ((r - r1) < s)
+			COLOR.a = sin((r - r1) * k);
+	}
+}"
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="Gradient" id=7]
+colors = PoolColorArray( 0.886275, 0.933333, 0.564706, 0, 0.886275, 0.933333, 0.564706, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/value = 81.481
+shader_param/thickness = 24.466
+shader_param/offset = 0.0
+shader_param/smoothing = 0.0
+shader_param/fg = SubResource( 8 )
+shader_param/bg = SubResource( 6 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "moving_right",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "moving_left",
+"speed": 5.0
+} ]
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="camera" type="Camera2D" parent="."]
+current = true
+
+[node name="hud" type="CanvasLayer" parent="camera"]
+
+[node name="container" type="Control" parent="camera/hud"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hopsLeft" type="MarginContainer" parent="camera/hud/container"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -98.0
+margin_top = -87.0
+margin_right = 98.0
+margin_bottom = -44.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="camera/hud/container/hopsLeft"]
+margin_left = 90.0
+margin_top = 8.0
+margin_right = 105.0
+margin_bottom = 35.0
+size_flags_horizontal = 4
+custom_styles/normal = SubResource( 9 )
+text = "3"
+align = 1
+valign = 1
+
+[node name="progress" type="Panel" parent="camera/hud/container"]
+material = SubResource( 4 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -85.0
+margin_right = 20.0
+margin_bottom = -45.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="sprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "moving_left"
+
+[node name="movement_noise" type="AudioStreamPlayer" parent="."]
+
+[node name="pause_menu" parent="." instance=ExtResource( 4 )]
+
+[node name="hopsTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="hopsTimer" to="." method="_on_hopsTimer_timeout"]

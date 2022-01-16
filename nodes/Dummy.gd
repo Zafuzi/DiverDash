@@ -1,12 +1,14 @@
-extends Spatial
+extends Node2D
 
-var current_pos = Vector3(0, 0, 0)
+var current_pos = Vector2(0, 0)
+var current_rot = 0
 var dummy_id = 0
 
 var dead = false
 	
 func _physics_process(delta):
-	if global_transform.origin - current_pos > Vector3(1, 1, 1):
+	rotation = lerp(rotation, current_rot, 0.05)
+	if position != current_pos:
 		_move_to(current_pos)
 		
 	if dead:
@@ -15,7 +17,8 @@ func _physics_process(delta):
 func _move_to(pos):
 	dead = false
 	$Timer.start()
-	global_transform.origin = lerp(global_transform.origin, pos, 0.05)
+	global_position = lerp(global_position, pos, 0.05)
+	print(position)
 
 
 func _on_Timer_timeout():
