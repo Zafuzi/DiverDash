@@ -37,4 +37,4 @@ position = Vector2( 660, 253 )
 
 [node name="portal" parent="." instance=ExtResource( 3 )]
 position = Vector2( 1182, 212 )
-next_level = "level_006"
+next_level = "level_007"
