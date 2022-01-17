@@ -7,7 +7,7 @@
 [ext_resource path="res://nodes/piper.tscn" type="PackedScene" id=5]
 [ext_resource path="res://sprites/tilesets/atlantisFakeNoCollision.tres" type="TileSet" id=6]
 
-[node name="level_000" type="Node2D"]
+[node name="level_001" type="Node2D"]
 
 [node name="map" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
