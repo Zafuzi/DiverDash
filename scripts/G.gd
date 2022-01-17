@@ -3,11 +3,13 @@ extends Node
 var current_scene 	= null
 
 var game_data = {
-	"current_level": "level_001"
+	"current_level": "level_001",
+	"id": 0
 }
 
 var default_game_data = {
-	"current_level": "level_001"
+	"current_level": "level_001",
+	"id": 0
 }
 
 func _ready():

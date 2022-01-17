@@ -12,7 +12,7 @@ const LEAN = 2
 export var health = 5
 
 var velocity = Vector2(0, 0)
-var player_id = rand_seed(get_instance_id() + rand_range(0, 100000))
+var player_id = G.game_data.id
 
 onready var sprite 			= $sprite
 onready var movement_noise 	= $movement_noise
@@ -21,6 +21,8 @@ onready var healthLabel		= $camera/hud/health/label
 onready var progress		= $camera/hud/hopsLeft/progress
 
 signal take_damage(direction)
+signal _die
+signal _portaled
 
 var hopsLeft = 3
 
@@ -37,7 +39,7 @@ func move():
 		
 func lean(deg):
 	match facing:
-		G.FACING_LEFT:
+		G.FACING_RIGHT:
 			deg *= -1
 		
 	$sprite.rotation =  lerp(sprite.rotation, deg2rad(deg), 0.09)
@@ -45,6 +47,25 @@ func lean(deg):
 var last_pos = Vector2.ZERO
 	
 func _process(delta):
+	if global_position != last_pos:
+		var message: Dictionary = {
+			id = player_id,
+			text = "player_pos",
+			level = G.game_data.current_level,
+			pos = position,
+			rot = $sprite.rotation,
+			dead = (health <= 0)
+		}
+		piper._send(message)
+		
+	match facing:
+		G.TURNING_LEFT:
+			scale.x = -1
+			facing = G.FACING_LEFT
+		G.TURNING_RIGHT:
+			scale.x = -1
+			facing = G.FACING_RIGHT
+			
 	match state:
 		G.IDLE:
 			lean(0)
@@ -52,30 +73,20 @@ func _process(delta):
 				movement_noise.playing = false
 			sprite.play("idle")
 		G.MOVING_LEFT:
+			if facing != G.FACING_LEFT:
+				facing = G.TURNING_LEFT
 			move()
 			lean(LEAN)
 			sprite.play("moving_right")
+
 		G.MOVING_RIGHT:
+			if facing != G.FACING_RIGHT:
+				facing = G.TURNING_RIGHT
 			move()
 			lean(-LEAN)
 			sprite.play("moving_right")
-	
-	var mouse_pos = G.mouse_pos - global_position
-	
-	if mouse_pos.x < 0:
-		if facing != G.FACING_LEFT:
-			facing = G.TURNING_LEFT
-	else:
-		if facing != G.FACING_RIGHT:
-			facing = G.TURNING_RIGHT
 		
-	match facing:
-		G.TURNING_LEFT:
-			#scale.x = -1
-			facing = G.FACING_LEFT
-		G.TURNING_RIGHT:
-			#scale.x = -1
-			facing = G.FACING_RIGHT
+
 								
 	if Input.is_action_pressed("shoot"):
 		if not Input.is_blocking_signals():
@@ -94,16 +105,6 @@ func _process(delta):
 		progress.material.set_shader_param("value", 100 - $hopsTimer.get_time_left() * 100)
 	else:
 		progress.visible = false
-		
-	if global_position != last_pos:
-		var message: Dictionary = {
-			id = player_id,
-			text = "player_pos",
-			level = G.game_data.current_level,
-			pos = position,
-			rot = $sprite.rotation
-		}
-		piper._send(message)
 		
 	last_pos = global_position
 		
@@ -150,7 +151,7 @@ func _physics_process(delta):
 				match_tile(collider, collision)
 	
 	if position.y > 2000 or position.y < -10000 or position.x > 4000 or position.x < -4000:
-		loader.reload_scene()
+		emit_signal("_die")
 
 func _on_hopsTimer_timeout():
 	if hopsLeft < 3:
@@ -181,8 +182,24 @@ func _on_Player_take_damage(direction:Vector2):
 		health -= 1
 		velocity += (-direction * JUMP_SPEED * 2)
 		if health == 0:
-			loader.reload_scene()
-
+			emit_signal("_die")
 
 func _on_canTakeDamageTimer_timeout():
 	canTakeDamage = true
+
+
+func _on_Player__die():
+	var message: Dictionary = {
+		id = player_id,
+		text = "player_pos",
+		level = G.game_data.current_level,
+		pos = position,
+		rot = $sprite.rotation,
+		dead = true
+	}
+	piper._send_now(message)
+	loader.reload_scene()
+
+
+func _on_Player__portaled():
+	pass

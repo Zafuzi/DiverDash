@@ -77,12 +77,12 @@ animations = [ {
 }, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
-"name": "moving_right",
+"name": "moving_left",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
-"name": "moving_left",
+"name": "moving_right",
 "speed": 5.0
 } ]
 
@@ -174,6 +174,8 @@ autostart = true
 wait_time = 0.5
 one_shot = true
 
+[connection signal="_die" from="." to="." method="_on_Player__die"]
+[connection signal="_portaled" from="." to="." method="_on_Player__portaled"]
 [connection signal="take_damage" from="." to="." method="_on_Player_take_damage"]
 [connection signal="timeout" from="hopsTimer" to="." method="_on_hopsTimer_timeout"]
 [connection signal="timeout" from="canTakeDamageTimer" to="." method="_on_canTakeDamageTimer_timeout"]
