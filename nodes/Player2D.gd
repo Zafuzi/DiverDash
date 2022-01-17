@@ -22,7 +22,6 @@ onready var progress		= $camera/hud/hopsLeft/progress
 
 signal take_damage(direction)
 signal _die
-signal _portaled
 
 var hopsLeft = 3
 
@@ -199,7 +198,3 @@ func _on_Player__die():
 	}
 	piper._send_now(message)
 	loader.reload_scene()
-
-
-func _on_Player__portaled():
-	pass

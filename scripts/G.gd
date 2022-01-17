@@ -82,6 +82,7 @@ func load_game():
 
 func save_game():
 	print(OS.get_user_data_dir())
+	print(game_data)
 	var file = File.new()
 	file.open("user://savegame.save", File.WRITE)
 	file.store_line(to_json(game_data))

@@ -88,7 +88,7 @@ level = "level002"
 
 [node name="portal" parent="." instance=ExtResource( 6 )]
 position = Vector2( 960, 480 )
-next_level = "level_001"
+next_level = "level_004"
 
 [node name="teleport" parent="." instance=ExtResource( 8 )]
 position = Vector2( 960, 64 )

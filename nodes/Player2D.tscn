@@ -175,7 +175,6 @@ wait_time = 0.5
 one_shot = true
 
 [connection signal="_die" from="." to="." method="_on_Player__die"]
-[connection signal="_portaled" from="." to="." method="_on_Player__portaled"]
 [connection signal="take_damage" from="." to="." method="_on_Player_take_damage"]
 [connection signal="timeout" from="hopsTimer" to="." method="_on_hopsTimer_timeout"]
 [connection signal="timeout" from="canTakeDamageTimer" to="." method="_on_canTakeDamageTimer_timeout"]
