@@ -16,7 +16,11 @@ func goto_scene(path): # Game requests to switch to this scene.
 		push_error("failed to load path: " + path)
 		return
 	set_process(true)
-	G.current_level = path
+	
+	if "level" in path:
+		G.game_data.current_level = path
+		G.save_game()
+	
 	current_scene.queue_free() # Get rid of the old scene.
 	
 func fade_in():
@@ -64,4 +68,4 @@ func set_new_scene(scene_resource):
 	fade_out()
 	
 func reload_scene():
-	goto_scene(G.current_level)
+	goto_scene(G.game_data.current_level)

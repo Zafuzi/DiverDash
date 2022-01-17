@@ -99,7 +99,7 @@ func _process(delta):
 		var message: Dictionary = {
 			id = player_id,
 			text = "player_pos",
-			level = G.current_level,
+			level = G.game_data.current_level,
 			pos = position,
 			rot = $sprite.rotation
 		}

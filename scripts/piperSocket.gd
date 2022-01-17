@@ -95,7 +95,7 @@ func _on_data():
 				dummy.current_pos = dummy_pos
 				
 		if not dummy_found:
-			if data.msg.level == G.current_level:
+			if data.msg.level == G.game_data.current_level:
 				# next update send my color with pos and rotation
 				dummySpawner.emit_signal("spawnDummy", data)
 

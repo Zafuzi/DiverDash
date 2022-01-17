@@ -1,11 +1,18 @@
 extends Node
 
-var next_level 		= "level_001"
-var current_level 	= "level_001"
 var current_scene 	= null
+
+var game_data = {
+	"current_level": "level_001"
+}
+
+var default_game_data = {
+	"current_level": "level_001"
+}
 
 func _ready():
 	current_scene = get_tree()
+	load_game()
 
 enum {
 	IMPACT_METAL
@@ -32,9 +39,6 @@ export (int) var screen_size = 0
 
 export (Vector2) var mouse_pos = Vector2(0, 0)
 
-export (int) var MonsterParts = 0
-const MAX_MONSTERS = 10
-
 var inputMethod = USING_MOUSEKB
 
 func _input(event):
@@ -59,3 +63,24 @@ func _process(delta):
 	
 	if current_scene is Node2D:
 		mouse_pos = current_scene.get_global_mouse_position()
+
+
+func load_game():
+	var file = File.new()
+	file.open("user://savegame.save", File.READ)
+	var text = file.get_line()
+	file.get_as_text()
+	game_data = parse_json(text);
+	print(game_data)
+	file.close()
+	
+	if not game_data:
+		game_data = default_game_data
+		save_game()
+
+func save_game():
+	print(OS.get_user_data_dir())
+	var file = File.new()
+	file.open("user://savegame.save", File.WRITE)
+	file.store_line(to_json(game_data))
+	file.close()

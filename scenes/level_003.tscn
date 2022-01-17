@@ -1,18 +1,102 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://nodes/Player2D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://nodes/piper.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sprites/tilesets/atlantis.tres" type="TileSet" id=3]
+[ext_resource path="res://main_theme.tres" type="Theme" id=4]
+[ext_resource path="res://sprites/tilesets/spikeset.tres" type="TileSet" id=5]
+[ext_resource path="res://nodes/portal.tscn" type="PackedScene" id=6]
+[ext_resource path="res://nodes/crusher.tscn" type="PackedScene" id=7]
+[ext_resource path="res://nodes/teleport.tscn" type="PackedScene" id=8]
 
 [node name="level_003" type="Node2D"]
+
+[node name="crusher" parent="." instance=ExtResource( 7 )]
+position = Vector2( 464, 504 )
+
+[node name="crusher2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 528, 504 )
+
+[node name="crusher3" parent="." instance=ExtResource( 7 )]
+position = Vector2( 592, 504 )
+
+[node name="crusher4" parent="." instance=ExtResource( 7 )]
+position = Vector2( 656, 504 )
 
 [node name="map" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 32, 32 )
 format = 1
-tile_data = PoolIntArray( -65538, 0, 5, -65537, 0, 5, -131072, 0, 5, -131071, 0, 5, -2, 0, 5, -65535, 0, 5, 65534, 0, 5, 1, 0, 5, 131070, 0, 5, 131071, 0, 5, 65536, 0, 5, 65537, 0, 5 )
+tile_data = PoolIntArray( 0, 0, 221, 1, -1073741824, 221, 2, -1073741824, 221, 3, -1073741824, 221, 4, -1073741824, 221, 5, -1073741824, 221, 6, -1073741824, 221, 7, -1073741824, 221, 8, -1073741824, 221, 9, -1073741824, 221, 10, -1073741824, 221, 11, -1073741824, 221, 12, -1073741824, 221, 13, -1073741824, 221, 14, -1073741824, 221, 15, -1073741824, 221, 16, -1073741824, 221, 17, -1073741824, 221, 18, -1073741824, 221, 19, -1073741824, 221, 20, -1073741824, 221, 21, -1073741824, 221, 22, -1073741824, 221, 23, -1073741824, 221, 24, -1073741824, 221, 25, -1073741824, 221, 26, -1073741824, 221, 27, -1073741824, 221, 28, -1073741824, 221, 29, -1073741824, 221, 30, -1073741824, 221, 31, 0, 224, 65536, 0, 221, 65567, 0, 224, 131072, 0, 221, 131103, 0, 224, 196608, 0, 221, 196609, 1610612736, 5, 196610, 1610612736, 5, 196611, 1610612736, 5, 196612, 1610612736, 5, 196635, 1610612736, 5, 196636, 1610612736, 5, 196637, 1610612736, 5, 196638, 1610612736, 5, 196639, 0, 224, 262144, 0, 221, 262175, 0, 224, 327680, 0, 221, 327711, 0, 224, 393216, 0, 221, 393247, 0, 224, 458752, 0, 221, 458783, 0, 224, 524288, 0, 221, 524319, 0, 224, 589824, 0, 221, 589825, -1073741824, 221, 589826, -1073741824, 221, 589827, -1073741824, 221, 589828, -1073741824, 221, 589829, -1073741824, 221, 589830, -1073741824, 221, 589831, -1073741824, 221, 589832, -1073741824, 221, 589833, -1073741824, 221, 589834, -1073741824, 221, 589835, -1073741824, 221, 589836, -1073741824, 221, 589837, -1073741824, 221, 589838, -1073741824, 221, 589839, -1073741824, 221, 589840, -1073741824, 221, 589841, -1073741824, 221, 589842, -1073741824, 221, 589843, -1073741824, 221, 589844, -1073741824, 221, 589845, -1073741824, 221, 589846, -1073741824, 221, 589847, -1073741824, 221, 589848, -1073741824, 221, 589849, -1073741824, 221, 589850, -1073741824, 221, 589851, -1073741824, 221, 589852, -1073741824, 221, 589853, -1073741824, 221, 589854, -1073741824, 221, 589855, 0, 224, 655372, 0, 31, 655373, 0, 33, 655374, 0, 33, 655375, 0, 33, 655376, 0, 33, 655377, 0, 33, 655378, 0, 33, 655379, 0, 33, 655380, 0, 33, 655381, 0, 33, 655382, 0, 31, 655391, 0, 224, 720908, 0, 31, 720909, 0, 33, 720910, 0, 33, 720911, 0, 33, 720912, 0, 33, 720913, 0, 33, 720914, 0, 33, 720915, 0, 33, 720916, 0, 33, 720917, 0, 33, 720918, 0, 31, 720927, 0, 224, 786444, 0, 31, 786445, 0, 33, 786446, 0, 33, 786447, 0, 33, 786448, 0, 33, 786449, 0, 33, 786450, 0, 33, 786451, 0, 33, 786452, 0, 33, 786453, 0, 33, 786454, 0, 31, 786463, 0, 224, 851980, 0, 31, 851981, 0, 33, 851982, 0, 33, 851983, 0, 33, 851984, 0, 33, 851985, 0, 33, 851986, 0, 33, 851987, 0, 33, 851988, 0, 33, 851989, 0, 33, 851990, 0, 31, 851999, 0, 224, 917516, 0, 31, 917517, 0, 33, 917518, 0, 33, 917519, 0, 33, 917520, 0, 33, 917521, 0, 33, 917522, 0, 33, 917523, 0, 33, 917524, 0, 33, 917525, 0, 33, 917526, 0, 31, 917535, 0, 224, 983052, 0, 31, 983053, 0, 132, 983054, 0, 132, 983055, 0, 132, 983056, 0, 132, 983057, 0, 132, 983058, 0, 132, 983059, 0, 132, 983060, 0, 132, 983061, 0, 132, 983062, 0, 31, 983071, 0, 224, 1048588, 0, 31, 1048598, 0, 31, 1048605, 0, 5, 1048606, 0, 5, 1048607, 0, 224, 1114124, 0, 31, 1114134, 0, 31, 1114140, 0, 5, 1114141, 0, 5, 1114142, 0, 5, 1114143, 0, 224, 1179654, 0, 219, 1179655, 0, 33, 1179656, 0, 33, 1179657, 0, 33, 1179658, 0, 33, 1179659, 0, 33, 1179660, 0, 33, 1179661, 0, 33, 1179662, 0, 33, 1179663, 0, 33, 1179664, 0, 33, 1179665, 0, 33, 1179666, 0, 33, 1179667, 0, 33, 1179668, 0, 33, 1179669, 0, 33, 1179670, 0, 33, 1179671, 0, 33, 1179672, 0, 33, 1179673, 0, 33, 1179674, 0, 33, 1179675, 0, 33, 1179676, 0, 33, 1179677, 0, 33, 1179678, 0, 33, 1179679, 1610612736, 219, 1441792, -1610612736, 221, 1441793, -1610612736, 221, 1441794, -1610612736, 221, 1441795, -1610612736, 221 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 240.0
+margin_top = 128.0
+margin_right = 811.0
+margin_bottom = 171.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/MarginContainer"]
+margin_right = 571.0
+margin_bottom = 43.0
+text = "Cover large gaps by timing your jumps"
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 496.0
+margin_top = 344.0
+margin_right = 632.0
+margin_bottom = 387.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/MarginContainer2"]
+margin_right = 136.0
+margin_bottom = 43.0
+size_flags_horizontal = 4
+text = "CRUSHERS"
+
+[node name="spikes" type="TileMap" parent="."]
+tile_set = ExtResource( 5 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 524294, 0, 0, 524295, 0, 0, 524296, 0, 0, 524297, 0, 0, 524298, 0, 0, 524299, 0, 0, 524300, 0, 0, 524301, 0, 0, 524302, 0, 0, 524303, 0, 0, 524304, 0, 0, 524305, 0, 0, 524306, 0, 0, 524307, 0, 0, 524308, 0, 0, 524309, 0, 0, 524310, 0, 0, 524311, 0, 0, 524312, 0, 0, 524313, 0, 0, 524314, 0, 0, 524315, 0, 0, 524316, 0, 0, 524317, 0, 0, 524318, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 64, 64 )
 
 [node name="piper" parent="." instance=ExtResource( 2 )]
-level = "level003"
+level = "level002"
+
+[node name="portal" parent="." instance=ExtResource( 6 )]
+position = Vector2( 960, 480 )
+next_level = "level_001"
+
+[node name="teleport" parent="." instance=ExtResource( 8 )]
+position = Vector2( 960, 64 )
+exit = NodePath("../teleport2")
+
+[node name="teleport2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 64, 672 )
+exit = NodePath("../teleport")
+
+[connection signal="body_entered" from="teleport" to="teleport" method="_on_teleport_body_entered"]
+[connection signal="body_entered" from="teleport2" to="teleport2" method="_on_teleport_body_entered"]
