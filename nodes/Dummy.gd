@@ -18,7 +18,6 @@ func _move_to(pos):
 	dead = false
 	$Timer.start()
 	global_position = lerp(global_position, pos, 0.05)
-	print(position)
 
 
 func _on_Timer_timeout():

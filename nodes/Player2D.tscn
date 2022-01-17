@@ -1,6 +1,5 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://sprites/player/player001.png" type="Texture" id=2]
 [ext_resource path="res://nodes/Player2D.gd" type="Script" id=3]
 [ext_resource path="res://nodes/pause_menu.tscn" type="PackedScene" id=4]
@@ -63,7 +62,7 @@ gradient = SubResource( 7 )
 [sub_resource type="ShaderMaterial" id=4]
 shader = SubResource( 3 )
 shader_param/value = 81.481
-shader_param/thickness = 24.466
+shader_param/thickness = 32.0
 shader_param/offset = 0.0
 shader_param/smoothing = 0.0
 shader_param/fg = SubResource( 8 )
@@ -101,48 +100,61 @@ current = true
 
 [node name="hud" type="CanvasLayer" parent="camera"]
 
-[node name="container" type="Control" parent="camera/hud"]
+[node name="ColorRect" type="ColorRect" parent="camera/hud"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 1 )
+color = Color( 0.0627451, 0.356863, 0.611765, 0.192157 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="hopsLeft" type="MarginContainer" parent="camera/hud/container"]
+[node name="health" type="MarginContainer" parent="camera/hud"]
+margin_right = 100.0
+margin_bottom = 43.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="label" type="Label" parent="camera/hud/health"]
+margin_right = 100.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 100, 0 )
+size_flags_horizontal = 2
+size_flags_vertical = 1
+text = "5"
+align = 1
+valign = 1
+
+[node name="hopsLeft" type="MarginContainer" parent="camera/hud"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -98.0
-margin_top = -87.0
-margin_right = 98.0
-margin_bottom = -44.0
+margin_left = -20.0
+margin_top = -79.0
+margin_right = 20.0
+margin_bottom = -39.0
+rect_min_size = Vector2( 40, 40 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="label" type="Label" parent="camera/hud/container/hopsLeft"]
-margin_left = 90.0
-margin_top = 8.0
-margin_right = 105.0
-margin_bottom = 35.0
+[node name="label" type="Label" parent="camera/hud/hopsLeft"]
+margin_left = 16.0
+margin_top = 13.0
+margin_right = 24.0
+margin_bottom = 27.0
 size_flags_horizontal = 4
 custom_styles/normal = SubResource( 9 )
 text = "3"
 align = 1
 valign = 1
 
-[node name="progress" type="Panel" parent="camera/hud/container"]
+[node name="progress" type="Panel" parent="camera/hud/hopsLeft"]
 material = SubResource( 4 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -85.0
-margin_right = 20.0
-margin_bottom = -45.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -158,4 +170,10 @@ animation = "moving_left"
 [node name="hopsTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="canTakeDamageTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="take_damage" from="." to="." method="_on_Player_take_damage"]
 [connection signal="timeout" from="hopsTimer" to="." method="_on_hopsTimer_timeout"]
+[connection signal="timeout" from="canTakeDamageTimer" to="." method="_on_canTakeDamageTimer_timeout"]

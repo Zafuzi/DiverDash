@@ -9,12 +9,18 @@ const JUMP_SPEED = -20
 const GRAVITY = 10
 const LEAN = 2
 
+export var health = 5
+
 var velocity = Vector2(0, 0)
 var player_id = rand_seed(get_instance_id() + rand_range(0, 100000))
 
 onready var sprite 			= $sprite
 onready var movement_noise 	= $movement_noise
-onready var hopsLabel		= $camera/hud/container/hopsLeft/label
+onready var hopsLabel		= $camera/hud/hopsLeft/label
+onready var healthLabel		= $camera/hud/health/label
+onready var progress		= $camera/hud/hopsLeft/progress
+
+signal take_damage(direction)
 
 var hopsLeft = 3
 
@@ -47,11 +53,11 @@ func _process(delta):
 			sprite.play("idle")
 		G.MOVING_LEFT:
 			move()
-			lean(-LEAN)
+			lean(LEAN)
 			sprite.play("moving_right")
 		G.MOVING_RIGHT:
 			move()
-			lean(LEAN)
+			lean(-LEAN)
 			sprite.play("moving_right")
 	
 	var mouse_pos = G.mouse_pos - global_position
@@ -81,11 +87,13 @@ func _process(delta):
 		pass
 		
 	hopsLabel.text = "" + str(hopsLeft)
+	healthLabel.text = "" + str(health)
+	
 	if hopsLeft < 3:
-		$camera/hud/container/progress.visible = true
-		$camera/hud/container/progress.material.set_shader_param("value", 100 - $hopsTimer.get_time_left() * 100)
+		progress.visible = true
+		progress.material.set_shader_param("value", 100 - $hopsTimer.get_time_left() * 100)
 	else:
-		$camera/hud/container/progress.visible = false
+		progress.visible = false
 		
 	if global_position != last_pos:
 		var message: Dictionary = {
@@ -160,4 +168,21 @@ func match_tile(collider, collision):
 		var tile_name = collision.collider.tile_set.tile_get_name(tile_id)
 		match tile_name:
 			"spikes":
-				loader.reload_scene()
+				var direction = ( tile_pos - global_position ).normalized()
+				emit_signal("take_damage", direction)
+
+
+var canTakeDamage = true
+
+func _on_Player_take_damage(direction:Vector2):
+	if canTakeDamage:
+		canTakeDamage = false
+		$canTakeDamageTimer.start()
+		health -= 1
+		velocity += (-direction * JUMP_SPEED * 2)
+		if health == 0:
+			loader.reload_scene()
+
+
+func _on_canTakeDamageTimer_timeout():
+	canTakeDamage = true
