@@ -7,7 +7,9 @@ const SPEED = 20
 const MAX_SPEED = 20
 const JUMP_SPEED = -20
 const GRAVITY = 10
-const LEAN = 2
+const LEAN = 30
+
+var leanMod = 0
 
 export var health = 5
 
@@ -19,6 +21,8 @@ onready var movement_noise 	= $movement_noise
 onready var hopsLabel		= $camera/hud/hopsLeft/label
 onready var healthLabel		= $camera/hud/health/label
 onready var progress		= $camera/hud/hopsLeft/progress
+onready var levelBest		= $camera/hud/levelBest/label
+onready var levelCurrent	= $camera/hud/levelCurrent/label
 
 signal take_damage(direction)
 signal _die
@@ -41,7 +45,8 @@ func lean(deg):
 		G.FACING_RIGHT:
 			deg *= -1
 		
-	$sprite.rotation =  lerp(sprite.rotation, deg2rad(deg), 0.09)
+	deg *= leanMod
+	$sprite.rotation =  lerp(sprite.rotation, deg2rad(deg), 0.02)
 	
 var last_pos = Vector2.ZERO
 	
@@ -85,19 +90,24 @@ func _process(delta):
 			lean(-LEAN)
 			sprite.play("moving_right")
 		
-
-								
-	if Input.is_action_pressed("shoot"):
-		if not Input.is_blocking_signals():
-			#$Pistol.shoot()
-			pass
-		
+			
 	if Input.is_action_just_pressed("reload"):
-		#$Pistol.reload()
-		pass
+		loader.reload_scene()
 		
 	hopsLabel.text = "" + str(hopsLeft)
 	healthLabel.text = "" + str(health)
+
+	
+	if G.level_timer == 0:
+		G.startLevelTimer()
+		
+	var levelCurrentTime = (G.current_unix_time - G.level_timer)
+	levelCurrent.text = "current: " + str(levelCurrentTime)
+	
+		
+	var levelBestTime = 0
+	levelBestTime = G.game_data.timers[G.game_data.current_level]
+	levelBest.text = "best: " + str(levelBestTime)
 	
 	if hopsLeft < 3:
 		progress.visible = true
@@ -120,6 +130,14 @@ func _physics_process(delta):
 		
 	var dirLeft = Input.get_action_strength("joy_horizontal_left")
 	var dirRight = Input.get_action_strength("joy_horizontal_right")
+	
+	if abs(dirLeft) > 0:
+		leanMod = dirLeft
+		state = G.MOVING_LEFT
+	
+	if abs(dirRight) > 0:
+		leanMod = dirRight
+		state = G.MOVING_RIGHT
 	
 	velocity.x += dirRight - dirLeft
 		

@@ -4,12 +4,14 @@ var current_scene 	= null
 
 var game_data = {
 	"current_level": "level_001",
-	"id": 0
+	"id": 0,
+	"timers": {}
 }
 
 var default_game_data = {
 	"current_level": "level_001",
-	"id": 0
+	"id": 0,
+	"timers": {}
 }
 
 func _ready():
@@ -65,6 +67,8 @@ func _process(_delta):
 	
 	if current_scene is Node2D:
 		mouse_pos = current_scene.get_global_mouse_position()
+		
+	current_unix_time = OS.get_unix_time()
 
 
 func load_game():
@@ -81,9 +85,38 @@ func load_game():
 		save_game()
 
 func save_game():
-	print(OS.get_user_data_dir())
 	print(game_data)
 	var file = File.new()
 	file.open("user://savegame.save", File.WRITE)
 	file.store_line(to_json(game_data))
 	file.close()
+	
+	
+var current_unix_time = OS.get_unix_time()
+
+var level_timer = 0
+
+func startLevelTimer():
+	if not G.game_data.timers.has(G.game_data.current_level):
+		G.game_data.timers[G.game_data.current_level] = 0
+	level_timer = OS.get_unix_time()
+
+func stopLevelTimer():
+	var time = OS.get_unix_time() - level_timer
+	
+	if not G.game_data.timers.has(G.game_data.current_level):
+		G.game_data.timers[G.game_data.current_level] = 0
+		
+	var best = G.game_data.timers[G.game_data.current_level]
+	
+	print(best, time)
+	
+	if best > 0:
+		if time > 0:
+			if time < best:
+				G.game_data.timers[G.game_data.current_level] = time
+	else:
+		G.game_data.timers[G.game_data.current_level] = time
+	
+	level_timer = 0
+	

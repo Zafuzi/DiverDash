@@ -17,10 +17,6 @@ func goto_scene(path): # Game requests to switch to this scene.
 		return
 	set_process(true)
 	
-	if "level" in path:
-		G.game_data.current_level = path
-		G.save_game()
-	
 	current_scene.queue_free() # Get rid of the old scene.
 	
 func fade_in():
@@ -64,8 +60,18 @@ func _process(_delta):
 
 func set_new_scene(scene_resource):
 	current_scene = scene_resource.instance()
+	var sceneName = current_scene.get_name()
+	if "level" in sceneName:
+		if G.level_timer > 0:
+			G.stopLevelTimer()
+		G.game_data.current_level = sceneName
+		G.startLevelTimer()
+		G.save_game()
+		
 	get_node("/root").add_child(current_scene)
 	fade_out()
 	
 func reload_scene():
+	G.level_timer = 0
+	print(G.game_data.current_level)
 	goto_scene(G.game_data.current_level)
