@@ -74,7 +74,7 @@ margin_bottom = 43.0
 text = "Cover large gaps by timing your jumps"
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 64, 96 )
+position = Vector2( 64, 64 )
 
 [node name="piper" parent="." instance=ExtResource( 2 )]
 level = "level002"
