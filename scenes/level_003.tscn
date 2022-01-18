@@ -48,6 +48,8 @@ tile_data = PoolIntArray( 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0
 [node name="Control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -72.0
+margin_bottom = -72.0
 theme = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
