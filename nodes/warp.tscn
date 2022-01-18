@@ -1,14 +1,3 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://scripts/warp.gd" type="Script" id=1]
-
-[node name="warp" type="Spatial"]
-script = ExtResource( 1 )
-__meta__ = {
-"_editor_description_": "don't forget to assign the player and the target node!"
-}
-
-[node name="timer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-[connection signal="timeout" from="timer" to="." method="_move_player"]
+version https://git-lfs.github.com/spec/v1
+oid sha256:5b734e160d4a164b16657829f5fbd2efd968253cf0810d0a34f3a0eda46007ec
+size 403

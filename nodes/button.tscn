@@ -1,12 +1,3 @@
-[gd_scene format=2]
-
-[node name="button" type="Button"]
-margin_left = 642.0
-margin_top = 406.0
-margin_right = 961.0
-margin_bottom = 460.0
-mouse_default_cursor_shape = 2
-text = "sample text"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:9c5719c3a64090d3a5a5a95a927a45799bac05a9489407eb3ce11636f6931a99
+size 233
