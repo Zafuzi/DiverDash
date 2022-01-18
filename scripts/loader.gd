@@ -32,7 +32,7 @@ func fade_out():
 	$animation.play("fade_out")
 	wait_frames = 1
 	
-func _process(time):
+func _process(_delta):
 	if loader == null:
 		# no need to process anymore
 		set_process(false)

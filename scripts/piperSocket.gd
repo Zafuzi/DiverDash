@@ -4,7 +4,7 @@ extends Node
 export var level	: String = "test"
 var token 			: String = "diverDash_" + level
 var websocket_url 	: String = "wss://piper.sleepless.com/" + token
-var authorize_url	: String = "https://piper.sleepless.com/1.1.0/authorize_token:" + token
+var authorize_url	: String = "https://piper.sleepless.com/v1.2.0/authorize_token:" + token
 
 # Our WebSocketClient instance
 var ws = WebSocketClient.new()
@@ -23,7 +23,6 @@ func _globalSendTimer_timeout():
 	globalSendTimer.stop()
 
 func _ready():
-	
 	ws.connect("connection_closed", self, "_closed")
 	ws.connect("connection_error", self, "_closed")
 	ws.connect("connection_established", self, "_connected")
@@ -42,16 +41,20 @@ func _ready():
 	_connect_to_server()
 		
 func _connect_to_server():
-
 	# Perform a POST request. The URL below returns JSON as of writing.
 	var error = http_request.request(authorize_url, ["User-Agent: Glamorious the Wise (Godot)"], true, HTTPClient.METHOD_POST)
 	if error != OK:
-		print(HTTPRequest.RESULT_CANT_CONNECT)
 		push_error("An error occurred in the HTTP request.")
 
 # Called when the HTTP request is completed.
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func _http_request_completed(result, response_code, headers, body):
-	_connect_to_websocket()
+	if response_code == 200:
+		_connect_to_websocket()
+	else:
+		push_error("HTTP ERROR: " + str(response_code))
 
 var FATAL_ERROR = false
 func _connect_to_websocket():
@@ -66,6 +69,7 @@ func _closed(was_clean = false):
 	print("Closed, clean: ", was_clean)
 	set_process(false)
 
+# warning-ignore:unused_argument
 func _connected(proto = ""):
 	peer = ws.get_peer(1)
 	peer.set_write_mode(WebSocketPeer.WRITE_MODE_TEXT)
@@ -78,6 +82,7 @@ func _send(msg):
 			
 			if peer.is_connected_to_host():
 				var packet: PoolByteArray = JSON.print(msg).to_utf8()
+# warning-ignore:return_value_discarded
 				peer.put_packet(packet)
 			else:
 				if not FATAL_ERROR:
@@ -89,6 +94,7 @@ func _send_now(msg):
 	if peer:
 		if peer.is_connected_to_host():
 			var packet: PoolByteArray = JSON.print(msg).to_utf8()
+# warning-ignore:return_value_discarded
 			peer.put_packet(packet)
 		else:
 			if not FATAL_ERROR:
@@ -120,6 +126,7 @@ func _on_data():
 				# next update send my color with pos and rotation
 				dummySpawner.emit_signal("spawnDummy", data)
 
+# warning-ignore:unused_argument
 func _process(delta):
 	if ws:
 		ws.poll()

@@ -56,7 +56,7 @@ func _input(event):
 	if event is InputEventKey:
 		inputMethod = USING_MOUSEKB
 
-func _process(delta):
+func _process(_delta):
 	screen_size = get_viewport().get_visible_rect().size
 	SW = screen_size.x
 	SH = screen_size.y

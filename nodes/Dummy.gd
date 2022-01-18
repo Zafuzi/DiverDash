@@ -20,7 +20,7 @@ func _ready():
 	
 	$Control/dataId/label.text = str(data_id).substr(0,4)
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	rotation = lerp(rotation, current_rot, 0.05)
 	
 	var difference = global_position - current_pos
