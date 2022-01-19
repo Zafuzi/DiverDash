@@ -3,11 +3,13 @@ extends KinematicBody2D
 var state = G.IDLE
 var facing = G.FACING_RIGHT
 
-const SPEED = 20
+const SPEED = 10
 const MAX_SPEED = 20
-const JUMP_SPEED = -20
+const JUMP_SPEED = -30
 const GRAVITY = 10
 const LEAN = 30
+
+var biomeSpeedModifier = 0
 
 var leanMod = 0
 
@@ -16,17 +18,20 @@ export var health = 5
 var velocity = Vector2(0, 0)
 var player_id = G.game_data.id
 
-onready var sprite 			= $sprite
-onready var movement_noise 	= $movement_noise
-onready var hopsLabel		= $camera/hud/hopsLeft/label
-onready var healthLabel		= $camera/hud/health/label
-onready var progress		= $camera/hud/hopsLeft/progress
-onready var levelBest		= $camera/hud/levelBest/label
-onready var levelCurrent	= $camera/hud/levelCurrent/label
-onready var levelName		= $camera/hud/levelName/label
+onready var sprite 				= $sprite
+onready var jump_noise 			= $jump_noise
+onready var take_damage_noise 	= $take_damage_noise
+onready var hopsLabel			= $camera/hud/hopsLeft/label
+onready var healthLabel			= $camera/hud/health/label
+onready var progress			= $camera/hud/hopsLeft/progress
+onready var levelBest			= $camera/hud/levelBest/label
+onready var levelCurrent		= $camera/hud/levelCurrent/label
+onready var levelName			= $camera/hud/levelName/label
 
 signal take_damage(direction)
 signal _die
+signal switchBiomes(biome)
+signal portal
 
 var hopsLeft = 3
 
@@ -43,11 +48,6 @@ func _ready():
 
 	levelName.text = level_name
 
-# make the rolling noise, add random character motions
-func move():
-	if not movement_noise.playing:
-		movement_noise.playing = true
-		
 func lean(deg):
 	match facing:
 		G.FACING_RIGHT:
@@ -81,20 +81,16 @@ func _process(delta):
 	match state:
 		G.IDLE:
 			lean(0)
-			if movement_noise.playing:
-				movement_noise.playing = false
 			sprite.play("idle")
 		G.MOVING_LEFT:
 			if facing != G.FACING_LEFT:
 				facing = G.TURNING_LEFT
-			move()
 			lean(LEAN)
 			sprite.play("moving_right")
 
 		G.MOVING_RIGHT:
 			if facing != G.FACING_RIGHT:
 				facing = G.TURNING_RIGHT
-			move()
 			lean(-LEAN)
 			sprite.play("moving_right")
 		
@@ -158,14 +154,17 @@ func _physics_process(delta):
 	if abs(velocity.x) > MAX_SPEED:
 		velocity.x = direction * MAX_SPEED
 		
-	velocity.x = lerp(velocity.x, 0, 0.05)
-	velocity.y = lerp(velocity.y, GRAVITY, 0.05)
+
 	
 	if Input.is_action_just_pressed("jump") and hopsLeft > 0:
 		hopsLeft -= 1
 		velocity.y = JUMP_SPEED
+		jump_noise.play()
 		
-	move_and_slide(velocity * SPEED)
+	velocity.x = lerp(velocity.x, 0, 0.05)
+	velocity.y = lerp(velocity.y, GRAVITY, 0.05)
+	
+	move_and_slide(velocity * (SPEED + biomeSpeedModifier))
 
 	var slide_count = get_slide_count()
 	if slide_count:
@@ -173,6 +172,8 @@ func _physics_process(delta):
 		var collider = collision.collider
 		if collider:
 			if collider is TileMap:
+				if !$collide_sound.is_playing() and state != G.IDLE:
+					$collide_sound.play()
 				match_tile(collider, collision)
 	
 	if position.y > 2000 or position.y < -10000 or position.x > 4000 or position.x < -4000:
@@ -181,7 +182,6 @@ func _physics_process(delta):
 func _on_hopsTimer_timeout():
 	if hopsLeft < 3:
 		hopsLeft += 1
-
 
 func match_tile(collider, collision):
 	# Find the character's position in tile coordinates
@@ -197,15 +197,15 @@ func match_tile(collider, collision):
 				var direction = ( tile_pos - global_position ).normalized()
 				emit_signal("take_damage", direction)
 
-
 var canTakeDamage = true
-
 func _on_Player_take_damage(direction:Vector2):
 	if canTakeDamage:
 		canTakeDamage = false
 		$canTakeDamageTimer.start()
 		health -= 1
 		velocity += (-direction * JUMP_SPEED * 2)
+		$takeDamageAnimation.play("takeDamage")
+		$take_damage_noise.play()
 		if health == 0:
 			emit_signal("_die")
 
@@ -224,3 +224,14 @@ func _on_Player__die():
 	}
 	piper._send_now(message)
 	loader.reload_scene()
+
+func _on_Player_switchBiomes(biome):
+	print(biome)
+	match biome:
+		G.BIOMES.WATER:
+			biomeSpeedModifier = 0
+		G.BIOMES.AIR:
+			biomeSpeedModifier = 5
+			
+func _on_Player_portal():
+	$portalAnimation.play("portal")

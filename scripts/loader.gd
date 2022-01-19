@@ -61,6 +61,7 @@ func _process(_delta):
 func set_new_scene(scene_resource):
 	current_scene = scene_resource.instance()
 	var sceneName = current_scene.get_name()
+	print(sceneName)
 	if "level" in sceneName:
 		if G.level_timer > 0:
 			G.stopLevelTimer()

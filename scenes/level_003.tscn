@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://nodes/Player2D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://nodes/piper.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://nodes/crusher.tscn" type="PackedScene" id=7]
 [ext_resource path="res://nodes/teleport.tscn" type="PackedScene" id=8]
 [ext_resource path="res://sprites/tilesets/atlantisFakeNoCollision.tres" type="TileSet" id=9]
+[ext_resource path="res://nodes/biomeSwitcher.tscn" type="PackedScene" id=10]
 
 [node name="level_003" type="Node2D"]
 
@@ -91,5 +92,11 @@ exit = NodePath("../teleport2")
 position = Vector2( 64, 646 )
 exit = NodePath("../teleport")
 
-[connection signal="body_entered" from="teleport" to="teleport" method="_on_teleport_body_entered"]
-[connection signal="body_entered" from="teleport2" to="teleport2" method="_on_teleport_body_entered"]
+[node name="biomeSwitcher" parent="." instance=ExtResource( 10 )]
+position = Vector2( 528, 80 )
+scale = Vector2( 30, 2 )
+biome = 1
+
+[node name="biomeSwitcher2" parent="." instance=ExtResource( 10 )]
+position = Vector2( 528, 448 )
+scale = Vector2( 30, 15 )

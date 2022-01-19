@@ -38,7 +38,6 @@ func _move_to(pos):
 
 
 func _on_Timer_timeout():
-	print("die")
 	dead = true
 
 

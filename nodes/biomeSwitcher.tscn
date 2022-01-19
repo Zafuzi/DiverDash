@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/biomeSwitcher.gd" type="Script" id=1]
+[ext_resource path="res://audio/splash.ogg" type="AudioStream" id=2]
+
+[sub_resource type="RectangleShape2D" id=22]
+extents = Vector2( 20, 20 )
+
+[node name="biomeSwitcher" type="Area2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 22 )
+
+[node name="splashSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+
+[connection signal="body_entered" from="." to="." method="_on_biomeSwitcher_body_entered"]

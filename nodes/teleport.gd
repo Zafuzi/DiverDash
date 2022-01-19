@@ -19,6 +19,7 @@ func _on_teleport_body_entered(body):
 		exitNode.canTeleport = false
 		exitNode.get_node("teleport_timer").start()
 		body.global_position = exitNode.global_position
+		$teleportSound.play()
 
 
 func _on_teleport_timer_timeout():

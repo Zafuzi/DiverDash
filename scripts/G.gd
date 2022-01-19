@@ -3,13 +3,13 @@ extends Node
 var current_scene 	= null
 
 var game_data = {
-	"current_level": "level_001",
+	"current_level": "level_tutorial_001",
 	"id": 0,
 	"timers": {}
 }
 
 var default_game_data = {
-	"current_level": "level_001",
+	"current_level": "level_tutorial_001",
 	"id": 0,
 	"timers": {}
 }
@@ -34,6 +34,11 @@ enum {
 	
 	USING_JOY
 	USING_MOUSEKB
+}
+
+enum BIOMES {
+	WATER
+	AIR
 }
 
 export (int) var SW = 0
@@ -77,7 +82,7 @@ func load_game():
 	var text = file.get_line()
 	file.get_as_text()
 	game_data = parse_json(text);
-	print(game_data)
+	#print(game_data)
 	file.close()
 	
 	if not game_data:
@@ -85,7 +90,7 @@ func load_game():
 		save_game()
 
 func save_game():
-	print(game_data)
+	#print(game_data)
 	var file = File.new()
 	file.open("user://savegame.save", File.WRITE)
 	file.store_line(to_json(game_data))
@@ -109,7 +114,7 @@ func stopLevelTimer():
 		
 	var best = G.game_data.timers[G.game_data.current_level]
 	
-	print(best, time)
+	#print(best, time)
 	
 	if best > 0:
 		if time > 0:
@@ -129,7 +134,10 @@ class Level:
 		self.name = _name
 	
 var levels = [
-	Level.new("level_001", "Learn the Ropes"),
+	Level.new("level_tutorial_001", "Tutorial: Learn the Ropes"),
+	Level.new("level_tutorial_002", "Tutorial: Air Gordan"),
+	Level.new("level_tutorial_003", "Tutorial: Portal 3: Make me Scream"),
+	Level.new("level_001", "Your Love Hurts Me"),
 	Level.new("level_002", "Think Inside the Box"),
 	Level.new("level_003", "Third Time is the Charm"),
 	Level.new("level_004", "Lucky Clover"),

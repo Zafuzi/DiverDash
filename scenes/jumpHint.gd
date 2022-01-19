@@ -1,6 +1,7 @@
-extends Node2D
+extends MarginContainer
 
-onready var jumpHint = $Control/jumpHint/label
+
+onready var jumpHint = $label
 
 func _process(delta):
 	match G.inputMethod:

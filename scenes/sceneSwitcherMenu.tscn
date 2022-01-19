@@ -1,18 +1,18 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
-[ext_resource path="res://scenes/level_selector_menu.gd" type="Script" id=2]
+[ext_resource path="res://scenes/sceneSwitcherMenu.gd" type="Script" id=3]
 
-[node name="level_selector_menu" type="Control"]
+[node name="sceneSwitcherMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="margin" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -75.5
@@ -23,7 +23,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="back_button" type="Button" parent="margin"]
+[node name="main_menu" type="Button" parent="MarginContainer"]
 margin_right = 151.0
 margin_bottom = 43.0
 text = "main menu"
@@ -35,8 +35,8 @@ margin_left = 24.0
 margin_top = 78.0
 margin_right = -24.0
 margin_bottom = -24.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -46,5 +46,3 @@ margin_right = 1232.0
 margin_bottom = 618.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[connection signal="pressed" from="margin/back_button" to="." method="_on_back_button_pressed"]

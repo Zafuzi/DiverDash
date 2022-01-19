@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/pause_menu.gd" type="Script" id=1]
 [ext_resource path="res://nodes/button.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/CutiveMono_Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://scenes/scene_switcher.tscn" type="PackedScene" id=4]
 [ext_resource path="res://main_theme.tres" type="Theme" id=5]
 
 [sub_resource type="DynamicFont" id=1]
@@ -42,7 +43,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="menu/MarginContainer"]
-margin_right = 1872.0
+margin_right = 1232.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 1
@@ -67,24 +68,29 @@ __meta__ = {
 
 [node name="button_resume" parent="menu/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 0.0
-margin_top = 21.0
+margin_top = 14.0
 margin_right = 588.0
-margin_bottom = 75.0
+margin_bottom = 57.0
 theme = ExtResource( 5 )
 text = "resume"
 
+[node name="scene_switcher" parent="menu/VBoxContainer" instance=ExtResource( 4 )]
+margin_top = 61.0
+margin_right = 588.0
+margin_bottom = 104.0
+
 [node name="button_reload" parent="menu/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 0.0
-margin_top = 79.0
+margin_top = 108.0
 margin_right = 588.0
-margin_bottom = 133.0
+margin_bottom = 151.0
 text = "reload"
 
 [node name="button_main_menu" parent="menu/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 0.0
-margin_top = 137.0
+margin_top = 155.0
 margin_right = 588.0
-margin_bottom = 191.0
+margin_bottom = 198.0
 text = "main menu"
 
 [connection signal="pressed" from="menu/VBoxContainer/button_resume" to="." method="_unpause_game"]

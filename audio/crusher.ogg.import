@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/crusher.ogg-d8a69bdee0e2e437b30fc09d5028de19.oggstr"
+
+[deps]
+
+source_file="res://audio/crusher.ogg"
+dest_files=[ "res://.import/crusher.ogg-d8a69bdee0e2e437b30fc09d5028de19.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

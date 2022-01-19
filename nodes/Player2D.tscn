@@ -1,9 +1,12 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://sprites/player/player001.png" type="Texture" id=2]
 [ext_resource path="res://nodes/Player2D.gd" type="Script" id=3]
 [ext_resource path="res://nodes/pause_menu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://audio/phew.ogg" type="AudioStream" id=5]
+[ext_resource path="res://audio/ouch.ogg" type="AudioStream" id=6]
+[ext_resource path="res://audio/collision.ogg" type="AudioStream" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
@@ -86,6 +89,92 @@ animations = [ {
 "name": "moving_right",
 "speed": 5.0
 } ]
+
+[sub_resource type="Animation" id=10]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "takeDamage"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.180392 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.180392 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.180392 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "portal"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
 
 [node name="Player" type="KinematicBody2D" groups=["player"]]
 script = ExtResource( 3 )
@@ -226,7 +315,8 @@ valign = 1
 frames = SubResource( 2 )
 animation = "moving_left"
 
-[node name="movement_noise" type="AudioStreamPlayer" parent="."]
+[node name="jump_noise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
 
 [node name="pause_menu" parent="." instance=ExtResource( 4 )]
 
@@ -237,7 +327,25 @@ autostart = true
 wait_time = 0.5
 one_shot = true
 
+[node name="takeDamageAnimation" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 10 )
+anims/takeDamage = SubResource( 11 )
+
+[node name="take_damage_noise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="portalAnimation" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 13 )
+anims/portal = SubResource( 12 )
+
+[node name="collide_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -10.0
+pitch_scale = 0.8
+
 [connection signal="_die" from="." to="." method="_on_Player__die"]
+[connection signal="portal" from="." to="." method="_on_Player_portal"]
+[connection signal="switchBiomes" from="." to="." method="_on_Player_switchBiomes"]
 [connection signal="take_damage" from="." to="." method="_on_Player_take_damage"]
 [connection signal="timeout" from="hopsTimer" to="." method="_on_hopsTimer_timeout"]
 [connection signal="timeout" from="canTakeDamageTimer" to="." method="_on_canTakeDamageTimer_timeout"]

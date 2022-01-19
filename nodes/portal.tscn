@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://sprites/portal/portal4.png" type="Texture" id=1]
 [ext_resource path="res://sprites/portal/portal1.png" type="Texture" id=2]
 [ext_resource path="res://sprites/portal/portal3.png" type="Texture" id=3]
 [ext_resource path="res://sprites/portal/portal2.png" type="Texture" id=4]
 [ext_resource path="res://nodes/portal.gd" type="Script" id=5]
+[ext_resource path="res://audio/portal.ogg" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=18]
 extents = Vector2( 16, 16 )
@@ -26,7 +27,11 @@ shape = SubResource( 18 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 19 )
 animation = "idle"
-frame = 3
+frame = 1
 playing = true
 
+[node name="portalSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
 [connection signal="body_entered" from="." to="." method="_on_portal_body_entered"]
+[connection signal="finished" from="portalSound" to="." method="_on_portalSound_finished"]
