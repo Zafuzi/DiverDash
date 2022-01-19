@@ -120,3 +120,20 @@ func stopLevelTimer():
 	
 	level_timer = 0
 	
+class Level:
+	var path = ""
+	var name = ""
+	
+	func _init(_path, _name):
+		self.path = _path
+		self.name = _name
+	
+var levels = [
+	Level.new("level_001", "Learn the Ropes"),
+	Level.new("level_002", "Think Inside the Box"),
+	Level.new("level_003", "Third Time is the Charm"),
+	Level.new("level_004", "Lucky Clover"),
+	Level.new("level_005", "Golden Cups of Glamorious Rebuttal"),
+	Level.new("level_006", "Unfinished but not Unloved"),
+	Level.new("level_007", "Precursor to Disaster"),
+]

@@ -23,6 +23,7 @@ onready var healthLabel		= $camera/hud/health/label
 onready var progress		= $camera/hud/hopsLeft/progress
 onready var levelBest		= $camera/hud/levelBest/label
 onready var levelCurrent	= $camera/hud/levelCurrent/label
+onready var levelName		= $camera/hud/levelName/label
 
 signal take_damage(direction)
 signal _die
@@ -34,6 +35,13 @@ onready var piper = get_tree().get_nodes_in_group("piper")[0]
 func _ready():
 	$sprite.rotation = 0
 	rotation = 0
+	
+	var level_name = ""
+	for level in G.levels:
+		if level.path == G.game_data.current_level:
+			level_name = level.name
+
+	levelName.text = level_name
 
 # make the rolling noise, add random character motions
 func move():
@@ -96,7 +104,7 @@ func _process(delta):
 		
 	hopsLabel.text = "" + str(hopsLeft)
 	healthLabel.text = "" + str(health)
-
+	
 	
 	if G.level_timer == 0:
 		G.startLevelTimer()

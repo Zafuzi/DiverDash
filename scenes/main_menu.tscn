@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://fonts/CutiveMono_Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/reset_game.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scripts/play_button.gd" type="Script" id=5]
 [ext_resource path="res://scripts/quit_button.gd" type="Script" id=6]
 [ext_resource path="res://scenes/main_menu.gd" type="Script" id=7]
+[ext_resource path="res://scenes/level_selector.gd" type="Script" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
@@ -42,7 +43,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="Control/MarginContainer"]
-margin_right = 1872.0
+margin_right = 1232.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 1
@@ -71,29 +72,29 @@ __meta__ = {
 margin_left = 0.0
 margin_top = 0.0
 margin_right = 381.0
-margin_bottom = 27.0
+margin_bottom = 43.0
 text = "play"
 script = ExtResource( 5 )
 
 [node name="level_selector" type="Button" parent="Control/VBoxContainer"]
-margin_top = 31.0
+margin_top = 47.0
 margin_right = 381.0
-margin_bottom = 58.0
-disabled = true
+margin_bottom = 90.0
 text = "level select"
+script = ExtResource( 8 )
 
 [node name="reset_game" type="Button" parent="Control/VBoxContainer"]
-margin_top = 62.0
+margin_top = 94.0
 margin_right = 381.0
-margin_bottom = 89.0
+margin_bottom = 137.0
 text = "reset"
 script = ExtResource( 2 )
 
 [node name="quit_button" parent="Control/VBoxContainer" instance=ExtResource( 3 )]
 margin_left = 0.0
-margin_top = 93.0
+margin_top = 141.0
 margin_right = 381.0
-margin_bottom = 120.0
+margin_bottom = 184.0
 text = "quit"
 script = ExtResource( 6 )
 
@@ -102,6 +103,7 @@ wait_time = 0.5
 one_shot = true
 
 [connection signal="pressed" from="Control/VBoxContainer/play_button" to="Control/VBoxContainer/play_button" method="_play_game"]
+[connection signal="pressed" from="Control/VBoxContainer/level_selector" to="Control/VBoxContainer/level_selector" method="_on_level_selector_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/reset_game" to="Control/VBoxContainer/reset_game" method="_on_reset_game_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/quit_button" to="Control/VBoxContainer/quit_button" method="_quit_pressed"]
 [connection signal="timeout" from="Control/VBoxContainer/quit_button/timer" to="Control/VBoxContainer/quit_button" method="_quit_game"]
